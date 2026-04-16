@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <title>Monad Origin</title>
+ <p>Translating Sound to Form</p>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
@@ -430,47 +431,91 @@
   </footer>
 </div>
 
-<!-- hidden audio element for music playback -->
-<audio id="monadAudio" preload="auto">
-  <source src="texturebymonadoriginLQ.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+<!-- persistent audio element -->
 
 <div id="toastMsg" class="toast-msg">♫  now playing  ♫</div>
 
 <script>
   (function() {
-    // Get audio element
+// Persistent music playback - survives page navigation
+(function() {
     const audio = document.getElementById('monadAudio');
     let isPlaying = false;
     
+    // Check if music was playing before page unload
+    window.addEventListener('beforeunload', function() {
+        if (!audio.paused) {
+            sessionStorage.setItem('musicWasPlaying', 'true');
+            sessionStorage.setItem('musicCurrentTime', audio.currentTime);
+        } else {
+            sessionStorage.setItem('musicWasPlaying', 'false');
+        }
+    });
+    
+    // Restore music state when page loads
+    window.addEventListener('load', function() {
+        const wasPlaying = sessionStorage.getItem('musicWasPlaying');
+        const savedTime = sessionStorage.getItem('musicCurrentTime');
+        
+        if (wasPlaying === 'true' && savedTime) {
+            audio.currentTime = parseFloat(savedTime);
+            audio.play().catch(e => console.log('Autoplay blocked, user interaction needed'));
+            isPlaying = true;
+        }
+    });
+    
     function playMusic() {
-      // Resume audio context if needed (for modern browsers)
-      if (audio) {
-        audio.play().then(() => {
-          isPlaying = true;
-          // Show toast notification
-          const toast = document.getElementById('toastMsg');
-          toast.classList.add('show');
-          setTimeout(() => {
-            toast.classList.remove('show');
-          }, 2000);
-        }).catch(error => {
-          console.log('Playback failed:', error);
-          // Fallback: show message
-          alert('Click anywhere on the page first to enable audio playback, then try again.');
-        });
-      }
+        if (audio) {
+            // If audio is already playing, pause it instead
+            if (!audio.paused) {
+                audio.pause();
+                isPlaying = false;
+                const toast = document.getElementById('toastMsg');
+                toast.textContent = '♫  paused  ♫';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    toast.textContent = '♫  now playing  ♫';
+                }, 1500);
+                return;
+            }
+            
+            // Otherwise play
+            audio.play().then(() => {
+                isPlaying = true;
+                const toast = document.getElementById('toastMsg');
+                toast.textContent = '♫  now playing  ♫';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }).catch(error => {
+                console.log('Playback failed:', error);
+                alert('Click anywhere on the page first to enable audio playback, then try again.');
+            });
+        }
     }
     
     // Attach music card click event
     const musicCard = document.getElementById('music-card');
     if (musicCard) {
-      musicCard.addEventListener('click', (e) => {
-        e.preventDefault();
-        playMusic();
-      });
+        musicCard.addEventListener('click', (e) => {
+            e.preventDefault();
+            playMusic();
+        });
     }
+    
+    // Save current playback time periodically
+    setInterval(function() {
+        if (audio && !audio.paused) {
+            sessionStorage.setItem('musicCurrentTime', audio.currentTime);
+            sessionStorage.setItem('musicWasPlaying', 'true');
+        }
+    }, 1000);
+})();
+    
+    
+
     
     // ---------- CONTACT FORM TOGGLE ----------
     const contactTrigger = document.getElementById('contact-trigger');
@@ -494,7 +539,9 @@
         }
       });
     }
-    
+
+
+   
     // ---------- FORM SUBMIT ----------
     const sendBtn = document.getElementById('sendMsgBtn');
     const formContainer = document.getElementById('contact-form-ui');
