@@ -400,7 +400,7 @@
     <h2 class="section-heading">Get in touch</h2>
     <div class="section-rule"></div>
 
-   <form id="contact-form-ui" action="https://formspree.io/f/YOUR_ENDPOINT_HERE" method="POST">
+   <form id="contact-form-ui">
   <div class="form-field">
     <label for="cf-name">Name</label>
     <input type="text" id="cf-name" name="name" placeholder="Your name" autocomplete="name" required />
@@ -548,7 +548,8 @@
       });
     }
     
- // ---------- FORM SUBMIT (with Formspree) ----------
+// ---------- FORM SUBMIT (Google Sheets) ----------
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzgGvR4GGps3ud1wGMjbPNOgegggI6JMAQh3VhSR5hh8Y_EMqZZ4c7jVbkJUIQzBWxi_A/exec'; // ← PASTE YOUR URL HERE
 const contactForm = document.getElementById('contact-form-ui');
 const successDiv = document.getElementById('form-success');
 
@@ -556,38 +557,46 @@ if (contactForm) {
   contactForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    // Get form values
     const name = document.getElementById('cf-name').value;
     const email = document.getElementById('cf-email').value;
     const message = document.getElementById('cf-msg').value;
     
+    // Disable button and show sending state
     const submitBtn = contactForm.querySelector('.submit-btn');
     const originalText = submitBtn.innerHTML;
-    
     submitBtn.innerHTML = 'Sending...';
     submitBtn.disabled = true;
     
     try {
-      const response = await fetch(contactForm.action, {
+      // Send data to Google Sheets
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify({ name, email, message }),
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
       });
       
-      if (response.ok) {
-        contactForm.style.display = 'none';
-        successDiv.style.display = 'block';
-      } else {
-        alert('Something went wrong. Please try again.');
-      }
+      // Show success message
+      contactForm.style.display = 'none';
+      successDiv.style.display = 'block';
+      
+      // Optional: Clear form fields
+      document.getElementById('cf-name').value = '';
+      document.getElementById('cf-email').value = '';
+      document.getElementById('cf-msg').value = '';
+      
     } catch (error) {
-      alert('Network error. Please check your connection.');
+      alert('Error sending message. Please try again.');
+      console.error('Form error:', error);
     } finally {
       submitBtn.innerHTML = originalText;
       submitBtn.disabled = false;
     }
   });
-}    
-    // Handle URL hash for contact
+}
+   
+   // Handle URL hash for contact
     if (window.location.hash === '#contact') {
       showContactForm();
     }
