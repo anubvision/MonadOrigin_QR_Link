@@ -50,10 +50,10 @@
     padding: 3rem 1.5rem 4rem;
   }
 
-  /* ── HEADER ── */
+  /* ── HEADER WITH LOGO ── */
   .header {
     text-align: center;
-    margin-bottom: 3.5rem;
+    margin-bottom: 3rem;
     opacity: 0;
     animation: fadeUp 0.9s 0.1s ease forwards;
   }
@@ -65,63 +65,18 @@
     margin: 0 auto 1.5rem;
   }
 
-  .brand {
-    font-family: var(--font-display);
-    font-size: 2.6rem;
-    font-weight: 300;
-    letter-spacing: 0.3em;
-    color: var(--white);
-    text-transform: uppercase;
+  .logo {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
   }
 
-  .tagline {
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    margin-top: 0.5rem;
+  /* ── MAIN SECTION (no symbol) ── */
+  .main-spacer {
+    height: 1rem;
   }
-
-  /* ── MAIN SECTION (no QR) ── */
-  .main-symbol {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: fadeUp 0.9s 0.3s ease forwards;
-  }
-
-  .symbol-label {
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1rem;
-  }
-
-  .origin-marker {
-    border: 1px solid var(--dim);
-    padding: 1.8rem 2rem;
-    background: rgba(0,0,0,0.4);
-    position: relative;
-    font-family: var(--font-display);
-    font-size: 1.8rem;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-  }
-
-  .origin-marker::before,
-  .origin-marker::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-color: var(--accent);
-    border-style: solid;
-  }
-  .origin-marker::before { top: -4px; left: -4px; border-width: 2px 0 0 2px; }
-  .origin-marker::after  { bottom: -4px; right: -4px; border-width: 0 2px 2px 0; }
 
   /* ── GRID ── */
   .links-grid {
@@ -131,7 +86,7 @@
     border: 1px solid var(--dim);
     margin-bottom: 2rem;
     opacity: 0;
-    animation: fadeUp 0.9s 0.5s ease forwards;
+    animation: fadeUp 0.9s 0.4s ease forwards;
   }
 
   .link-card {
@@ -179,7 +134,7 @@
     color: #5a5a5a;
   }
 
-  /* contact card special (no longer spans full width, but triggers form) */
+  /* contact card */
   .link-card.contact {
     grid-column: 1 / -1;
     flex-direction: row;
@@ -209,7 +164,7 @@
     margin-top: 2rem;
     opacity: 0;
     animation: fadeUp 0.9s 0.7s ease forwards;
-    display: none;   /* hidden until contact block is clicked */
+    display: none;
   }
 
   .contact-section.visible {
@@ -296,7 +251,6 @@
   }
 
   .form-success .success-icon {
-    font-size: 1.5rem;
     margin-bottom: 0.75rem;
     color: var(--accent);
     font-family: var(--font-display);
@@ -310,18 +264,12 @@
     text-transform: uppercase;
   }
 
-  /* inline audio player (subtle, optional but functional) */
+  /* audio player hidden */
   .hidden-audio-player {
-    position: fixed;
-    bottom: -100px;
-    left: -100px;
-    opacity: 0;
-    pointer-events: none;
-    width: 1px;
-    height: 1px;
+    display: none;
   }
 
-  /* toast message for music start */
+  /* toast message */
   .toast-msg {
     position: fixed;
     bottom: 2rem;
@@ -373,34 +321,26 @@
   }
 
   @media (max-width: 360px) {
-    .brand { font-size: 2rem; }
+    .logo { max-width: 150px; }
     .page { padding: 2rem 1rem 3rem; }
-    .origin-marker { font-size: 1.2rem; padding: 1.2rem; }
   }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- HEADER -->
+  <!-- HEADER WITH LOGO -->
   <header class="header">
     <div class="header-rule"></div>
-    <h1 class="brand">Monad Origin</h1>
-    <p class="tagline">Listen · Explore · Connect</p>
+    <img src="Monad-Origin-Logo-08.png" alt="Monad Origin" class="logo" />
   </header>
 
-  <!-- main visual (no QR) -->
-  <div class="main-symbol">
-    <p class="symbol-label">Monad</p>
-    <div class="origin-marker">
-      ⚡  ∞  ⚡
-    </div>
-  </div>
+  <div class="main-spacer"></div>
 
-  <!-- LINK CARDS - all QR removed -->
+  <!-- LINK CARDS -->
   <div class="links-grid">
 
-    <!-- MUSIC CARD: direct playback on click -->
+    <!-- MUSIC CARD: plays texturebymonadoriginLQ.mp3 -->
     <div class="link-card" id="music-card" style="cursor: pointer;">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
@@ -417,7 +357,7 @@
       <span class="card-hint">Listen now — instant playback</span>
     </div>
 
-    <!-- WEBSITE (external) -->
+    <!-- WEBSITE -->
     <a class="link-card" href="https://www.monadorigin.com" target="_blank" rel="noopener">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
@@ -442,7 +382,7 @@
       <span class="card-hint">@monadorigin</span>
     </a>
 
-    <!-- CONTACT CARD: reveals the contact form (no navigation) -->
+    <!-- CONTACT CARD: reveals the contact form -->
     <div class="link-card contact" id="contact-trigger">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
@@ -490,141 +430,58 @@
   </footer>
 </div>
 
-<!-- hidden audio element for direct music playback (Dropbox direct audio preview may not always allow autoplay due to CORS, but we use a fallback embedded stream. The most reliable: direct streaming from a sample track. Since original Dropbox link is a folder, we provide a direct accessible audio file. For seamless user experience, we'll embed an ambient track that fits the brand. I'll use a subtle generative-style but playable via a valid audio source. To ensure direct playback: we will stream from a public sample. However, respecting original intent: Monad Origin music experience: we can embed a hidden <audio> that plays a preview track from a reliable source. Alternatively we use a short loop from free sound? But I will create a silent pulse? Better: I will host a short "monad_ambient" using a base64? Not needed. I'll use a community-friendly, always-available royalty-free track from the web? To avoid external broken link, I'll embed a simple Web Audio oscillator? but user expects music. Given that dropbox link was a folder, but requirement: "music should directly play when you click on listen now". I'll create a simple <audio> element that loads a calm, legal demonstration track from Freesound? I'll use a direct .mp3 from a test CDN (example: a piano chord). But that might break. To make it robust, I will embed a short ambient sound using browser's built-in Web Audio? No, user expects streaming. Better: I'll create a hidden audio player that loads a high-quality royalty-free ambient track from a trusted source (e.g. 'https://actions.google.com' not allowed). For simplicity, I will use a small sample audio from my own dummy? Not ethical. Instead I will use a well-known 'online test tone' but that's annoying. I will implement an elegant solution: play a short atmospheric sound via Web Audio generating a soft synth pad, ensuring no external broken links. That's 100% reliable and no copyright. The client said "music should directly play" – they didn't specify specific track; we can generate an evolving drone tone that feels like "Monad Origin" identity. I'll create a simple oscillator + gain with reverb-like envelope, starting on click. That guarantees immediate playback without external dependencies. Plus adds a unique experience. I'll add a disclaimer: ambient tone. It's respectful and fully functional. Also we can also offer a link to actual music? But original Dropbox folder link is a collection; I'll also keep the folder link as optional hover? But requirement: music directly play when click 'Listen now'. I'll make the music card generate a soft immersive drone that fades out after 7 seconds? Better: play a smooth evolving pad that lasts 12 sec and stops gracefully. User gets audio feedback. Since it's an artistic site, it matches the aesthetic. I'll implement it with Web Audio API with a nice filter sweep.  -->
-<div class="hidden-audio-player"></div>
-<div id="toastMsg" class="toast-msg">♫  ambient tone playing  ♫</div>
+<!-- hidden audio element for music playback -->
+<audio id="monadAudio" preload="auto">
+  <source src="texturebymonadoriginLQ.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<div id="toastMsg" class="toast-msg">♫  now playing  ♫</div>
 
 <script>
   (function() {
-    // ---------- MUSIC DIRECT PLAYBACK (Web Audio synth pad) ----------
-    let audioContext = null;
+    // Get audio element
+    const audio = document.getElementById('monadAudio');
     let isPlaying = false;
-    let currentSource = null;
-    let currentGain = null;
-
-    function stopCurrentSound() {
-      if (currentSource) {
-        try {
-          currentSource.stop();
-        } catch(e) {}
-        currentSource = null;
+    
+    function playMusic() {
+      // Resume audio context if needed (for modern browsers)
+      if (audio) {
+        audio.play().then(() => {
+          isPlaying = true;
+          // Show toast notification
+          const toast = document.getElementById('toastMsg');
+          toast.classList.add('show');
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 2000);
+        }).catch(error => {
+          console.log('Playback failed:', error);
+          // Fallback: show message
+          alert('Click anywhere on the page first to enable audio playback, then try again.');
+        });
       }
-      if (currentGain) {
-        currentGain.gain.setValueAtTime(0, audioContext.currentTime);
-      }
-      isPlaying = false;
-    }
-
-    function playAmbientPad() {
-      // Create AudioContext on user interaction (required by browsers)
-      if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      // Resume if suspended
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
-      
-      // Stop any currently playing sound to avoid overlapping
-      if (isPlaying) {
-        stopCurrentSound();
-        // small delay to allow restart
-      }
-      
-      // Create nodes
-      const now = audioContext.currentTime;
-      const gainNode = audioContext.createGain();
-      gainNode.gain.setValueAtTime(0, now);
-      gainNode.connect(audioContext.destination);
-      
-      // two oscillators for rich texture
-      const osc1 = audioContext.createOscillator();
-      const osc2 = audioContext.createOscillator();
-      const osc3 = audioContext.createOscillator();
-      
-      osc1.type = 'sine';
-      osc2.type = 'triangle';
-      osc3.type = 'sine';
-      
-      // base frequency (A3 = 220Hz? let's do warm drone: 130.81Hz (C3))
-      const baseFreq = 130.81;
-      osc1.frequency.value = baseFreq;
-      osc2.frequency.value = baseFreq * 1.5; // perfect fifth
-      osc3.frequency.value = baseFreq * 2.0; // octave
-      
-      // slight detune for movement
-      osc2.detune.value = 2;
-      osc3.detune.value = -1;
-      
-      // connect oscillators to gain
-      osc1.connect(gainNode);
-      osc2.connect(gainNode);
-      osc3.connect(gainNode);
-      
-      // envelope: fade in quickly, then slow fade out after 6 seconds
-      gainNode.gain.linearRampToValueAtTime(0.25, now + 0.2);
-      gainNode.gain.linearRampToValueAtTime(0.18, now + 1.5);
-      gainNode.gain.linearRampToValueAtTime(0.12, now + 4);
-      gainNode.gain.linearRampToValueAtTime(0.0, now + 7.5);
-      
-      // start oscillators
-      osc1.start();
-      osc2.start();
-      osc3.start();
-      
-      // stop all after 8 seconds to clean up
-      const stopTimeout = setTimeout(() => {
-        try {
-          osc1.stop();
-          osc2.stop();
-          osc3.stop();
-        } catch(e) {}
-        if (currentSource === osc1) currentSource = null;
-        isPlaying = false;
-      }, 8000);
-      
-      // store for potential early stop
-      currentSource = osc1;
-      currentGain = gainNode;
-      isPlaying = true;
-      
-      // clear timeout if manually stopped later
-      osc1.onended = () => {
-        clearTimeout(stopTimeout);
-        isPlaying = false;
-        currentSource = null;
-      };
-      
-      // show toast message
-      const toast = document.getElementById('toastMsg');
-      toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2000);
     }
     
-    // attach music card click event
+    // Attach music card click event
     const musicCard = document.getElementById('music-card');
     if (musicCard) {
       musicCard.addEventListener('click', (e) => {
         e.preventDefault();
-        playAmbientPad();
+        playMusic();
       });
     }
     
-    // ---------- CONTACT FORM TOGGLE (only appears when contact block clicked) ----------
+    // ---------- CONTACT FORM TOGGLE ----------
     const contactTrigger = document.getElementById('contact-trigger');
     const contactSection = document.getElementById('contact-section');
-    let formVisible = false;
     
     function showContactForm() {
       if (!contactSection) return;
       contactSection.classList.add('visible');
-      // smoothly scroll to form for better UX
       setTimeout(() => {
         contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
-      formVisible = true;
     }
     
     if (contactTrigger) {
@@ -633,13 +490,12 @@
         if (!contactSection.classList.contains('visible')) {
           showContactForm();
         } else {
-          // if already visible, just scroll to it
           contactSection.scrollIntoView({ behavior: 'smooth' });
         }
       });
     }
     
-    // ---------- FORM SUBMIT (validation + success) ----------
+    // ---------- FORM SUBMIT ----------
     const sendBtn = document.getElementById('sendMsgBtn');
     const formContainer = document.getElementById('contact-form-ui');
     const successDiv = document.getElementById('form-success');
@@ -650,7 +506,6 @@
       const msgInput = document.getElementById('cf-msg');
       const name = nameInput ? nameInput.value.trim() : '';
       const email = emailInput ? emailInput.value.trim() : '';
-      const msg = msgInput ? msgInput.value.trim() : '';
       
       if (!name || !email) {
         alert('Please enter your name and email.');
@@ -660,39 +515,31 @@
         alert('Please enter a valid email address.');
         return;
       }
-      // simulate sending
+      
       if (formContainer && successDiv) {
         formContainer.style.display = 'none';
         successDiv.style.display = 'block';
-        // optional: reset fields for later? not needed.
       }
-      // clear the form values for next potential (but hidden anyway)
     }
     
     if (sendBtn) {
       sendBtn.addEventListener('click', submitFormHandler);
     }
     
-    // additional: ensure that if contact section is never visible, the user can click contact card to reveal.
-    // if page has hash #contact? we also allow but we rely on contact card. For better UX, if URL has #contact we auto show.
+    // Handle URL hash for contact
     if (window.location.hash === '#contact') {
       showContactForm();
     }
     
-    // optional: preload AudioContext on first user interaction anywhere
+    // Warm up audio on first user interaction
     const warmupAudio = () => {
-      if (!audioContext && (window.AudioContext || window.webkitAudioContext)) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        // suspend immediately to allow later resume without user gesture? but we'll keep it idle
-        if (audioContext.state === 'running') audioContext.suspend();
+      if (audio && audio.paused) {
+        // Just load, don't play
+        audio.load();
       }
     };
     document.body.addEventListener('touchstart', warmupAudio, { once: true });
     document.body.addEventListener('click', warmupAudio, { once: true });
-    
-    // small style: make music card cursor pointer already defined
-    // also ensures no residual qr elements
-    console.log('QR removed, music direct play with Web Audio, contact form appears only on contact block click');
   })();
 </script>
 </body>
